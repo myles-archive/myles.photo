@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if album.breadcrumb %}
+    <div class="breadcrumb">
+        {% for url, title in album.breadcrumb %}
+        <a href="{{ url }}" class="breadcrumb__item{% if loop.last %} breadcrumb__item--last{% endif %}">{{ title }}</a>
+        {% endfor -%}
+    </div>
+    {% endif %}
+    
+    
+{% endblock %}

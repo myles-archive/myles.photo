@@ -1,0 +1,11 @@
+blinker==1.4
+click==6.6
+Jinja2==2.8
+libsass==0.11.1
+Markdown==2.6.6
+MarkupSafe==0.23
+pilkit==1.1.13
+Pillow==3.3.0
+sigal==1.2.0
+six==1.10.0
+wheel==0.26.0

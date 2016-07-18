@@ -1,0 +1,2 @@
+include = "{$include,.editorconfig}"
+exclude = "{$exclude,build,bower_components}"

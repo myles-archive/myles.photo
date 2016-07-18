@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% set media_title = media.title if media.title else media.filename %}
+    <header>
+        {% if album.breadcrumb %}
+        <h2>
+            {% for url, title in album.breadcrumb %}
+            <a href="{{ url }}">{{ title }}</a> »
+            {% endfor -%}
+            <a href="#">{{ media_title }}</a>
+        </h2>
+        <hr>
+        {% endif %}
+    </header>
+    
+    {% if media %}
+        <div class="twelve columns thumbnail">
+        {% if media.type == "image" %}
+            <img src="{{ media.filename }}" alt="{{ media_title }}" title="{{ media_title }}" />
+        {% endif %}
+        {% if media.type == "video" %}
+            <video controls>
+                <source src='{{ media.filename }}' type='video/webm' />
+            </video>
+        {% endif %}
+        </div>
+    {% endif %}
+    
+    <div class="two columns offset-by-four">
+        {% if previous_media %}
+        <a href="{{ previous_media.filename }}.html">« previous</a>
+        {% else %}
+        &nbsp;
+        {% endif %}
+    </div>
+    
+    <div class="two columns">
+        {% if next_media %}
+        <a href="{{ next_media.filename }}.html">next »</a>
+        {% endif %}
+    </div>
+{% endblock %}
