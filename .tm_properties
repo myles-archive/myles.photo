@@ -1,2 +1,2 @@
-include = "{$include,.editorconfig}"
+include = "{$include,.editorconfig,.gitattributes}"
 exclude = "{$exclude,build,bower_components}"

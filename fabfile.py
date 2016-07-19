@@ -1,4 +1,5 @@
-import os.path
+import os
+from contextlib import contextmanager
 
 from fabric import api
 
@@ -22,10 +23,31 @@ api.env.remote = 'origin'
 api.env.branch = 'master'
 
 
+@contextmanager
+def virtualenv():
+    """
+    A context for enabling the virtualenv.
+    """
+    with api.cd(api.env.venv_dir):
+        activate = os.path.join(api.env.venv_dir, 'bin/activate')
+        with api.prefix('source {0}'.format(activate)):
+            yield
+
+
+def sigal(command, **kwargs):
+    """
+    Helper function for running the sigal command.
+    """
+    args = ' '.join(['--{0}={1}'.format(k, v) for (k, v) in kwargs.items()])
+
+    with virtualenv():
+        api.run('sigal {0} {1}'.format(command, args))
+
+
 @api.task
 def setup():
     """
-    setup the deploy server.
+    Setup the deploy server.
     """
     # make a bunch of the directories.
     api.sudo('mkdir -p {0}'.format(' '.join([api.env.proj_dir,
@@ -33,7 +55,7 @@ def setup():
                                              api.env.html_dir,
                                              api.env.venv_dir])))
 
-    if not exists(os.path.join(api.env.proj_dir, '.git')):
+    if not api.exists(os.path.join(api.env.proj_dir, '.git')):
         # clone the git repo
         with api.cd(api.env.proj_dir):
             api.run('git clone {0} .'.format(api.env.repo))
@@ -44,7 +66,7 @@ def setup():
                                                       api.env.venv_dir])))
 
     # createh virtual environment.
-    if not exists(api.env.venv_dir):
+    if not api.exists(api.env.venv_dir):
         api.run('virtualenv {0}'.format(api.env.venv_dir))
 
     # install the dependencies.
@@ -54,9 +76,9 @@ def setup():
 @api.task
 def python_version():
     """
-    return the python version on the server for testing.
+    Return the python version on the server for testing.
     """
-    with api.cd(api.env.proj_dir):
+    with virtualenv():
         api.run("{0} -V".format(api.env.venv_python))
 
 
@@ -76,29 +98,59 @@ def pip_upgrade():
     """
     Upgrade the third party Python libraries.
     """
-    with api.cd(api.env.proj_dir):
-        api.run('{0} install --upgrade -r '
-                'requirements.txt'.format(api.env.venv_pip))
+    with virtualenv():
+        api.run('pip install --upgrade -r requirements.txt')
 
 
 @api.task
-def build_theme():
+def compile_scss():
+    """
+    Compile the SCSS files.
+    """
     scss_file = './theme/static/scss/style.scss'
     css_file = './theme/static/css/style.css'
     include_path = './bower_components/'
 
-    api.local('sassc.py --include-path={0} {1} {2}'.format(include_path,
-                                                           scss_file,
-                                                           css_file))
+    with virtualenv():
+        api.run('sassc.py --include-path={0} {1} {2}'.format(include_path,
+                                                             scss_file,
+                                                             css_file))
+
+
+@api.task
+def build():
+    """
+    Build the photo gallery.
+    """
+    config_file = os.path.join(api.env.proj_dir, 'sigal.conf.py')
+
+    sigal('build', config=config_file)
+
+
+@api.task
+def proselint():
+    """
+    Test for some basic grammer mistakes.
+    """
+    source_dir = os.path.join(api.env.proj_dir, 'source')
+    md_files = api.run('find {0} -name "*.md"'.format(source_dir))
+
+    with virtualenv():
+        for md_file in md_files:
+            api.run('proselint {0}'.format(md_file))
 
 
 @api.task
 def ship_it():
+    """
+    Ship the code to the server.
+    """
+
     # Check to make sure that there isn't any unchecked files
     git_status = api.local('git status --porcelain', capture=True)
 
     if git_status:
-        abort('There are unchecked files.')
+        api.abort('There are unchecked files.')
 
     # Push the repo to the remote
     api.local('git push {0} {1}'.format(api.env.remote, api.env.branch))
@@ -108,12 +160,12 @@ def ship_it():
     pip_upgrade()
 
     # Draw a ship
-    puts("                           |    |    |                           ")
-    puts("                          )_)  )_)  )_)                          ")
-    puts("                         )___))___))___)\                        ")
-    puts("                        )____)____)_____)\\                      ")
-    puts("                      _____|____|____|____\\\__                  ")
-    puts("             ---------\                   /---------             ")
-    puts("               ^^^^^ ^^^^^^^^^^^^^^^^^^^^^                       ")
-    puts("                 ^^^^      ^^^^     ^^^    ^^                    ")
-    puts("                      ^^^^      ^^^                              ")
+    api.puts("                           |    |    |                ")
+    api.puts("                          )_)  )_)  )_)               ")
+    api.puts("                         )___))___))___)\             ")
+    api.puts("                        )____)____)_____)\\           ")
+    api.puts("                      _____|____|____|____\\\__       ")
+    api.puts("             ---------\                   /---------  ")
+    api.puts("               ^^^^^ ^^^^^^^^^^^^^^^^^^^^^            ")
+    api.puts("                 ^^^^      ^^^^     ^^^    ^^         ")
+    api.puts("                      ^^^^      ^^^                   ")

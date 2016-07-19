@@ -6,6 +6,7 @@ Markdown==2.6.6
 MarkupSafe==0.23
 pilkit==1.1.13
 Pillow==3.3.0
+proselint==0.6.1
 sigal==1.2.0
 six==1.10.0
 wheel==0.26.0
