@@ -1,1 +1,0 @@
-Title: Myles' Photos

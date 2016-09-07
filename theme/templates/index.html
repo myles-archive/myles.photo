@@ -1,12 +1,37 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block breadcrumb %}
     {% if album.breadcrumb %}
     <div class="breadcrumb">
+        <a href="/" class="breadcrumb__item breadcrumb__item--first">Home</a>
         {% for url, title in album.breadcrumb %}
         <a href="{{ url }}" class="breadcrumb__item{% if loop.last %} breadcrumb__item--last{% endif %}">{{ title }}</a>
         {% endfor -%}
     </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if album.albums %}
+        <div class="album-list">
+            {% for alb in album.albums %}
+            <a href="{{ alb.url }}" title="{{ alb.title }}" class="album-list__link">
+                <div class="album-list__image-wrapper">
+                    <img src="{{ alb.thumbnail }}" alt="{{ alb.title }}" class="album-list__image">
+                </div>
+                
+                <div class="album-list__heading">
+                    {{ alb.title }}
+                </div>
+                
+                {% if album.description %}
+                <div class="album-list__description">
+                    {{ alb.description|truncate(75, True) }}
+                </div>
+                {% endif %}
+            </a>
+            {% endfor %}
+        </div>
     {% endif %}
     
     

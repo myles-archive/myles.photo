@@ -23,7 +23,7 @@ destination = 'build'
 
 # Theme :
 # - colorbox (default), galleria, photoswipe, or the path to a custom theme directory
-theme = 'galleria'
+theme = 'theme'
 
 # Author. Used in the footer of the pages and in the author meta tag.
 author = 'Myles Braithwaite'
@@ -82,9 +82,7 @@ thumb_dir = 'thumb'
 # thumb_suffix = '.tn'
 
 # Thumbnail size (default: (200, 150))
-# For the galleria theme, use 280 px for the width
-# For the colorbox and photoswipe theme, use 200 px for the width
-thumb_size = (280, 210)
+thumb_size = (500, 500)
 
 # Crop the image to fill the box
 thumb_fit = True
@@ -177,7 +175,7 @@ video_size = (480, 360)
 # Piwik tracking
 # tracker_url must not contain trailing slash.
 # Example : {'tracker_url': 'http://stats.domain.com', 'site_id' : 2}
-# piwik = {'tracker_url': '', 'site_id' : 0}
+piwik = {'tracker_url': '//piwik.mylesb.ca', 'site_id' : 16}
 
 # Set zip_gallery to either False or a file name. The final archive will
 # contain all resized or original files (depending on `zip_media_format`).
@@ -209,6 +207,7 @@ zip_media_format = 'resized'
 # from this file must be serializable).
 # plugins = ['sigal.plugins.adjust', 'sigal.plugins.copyright',
 #            'sigal.plugins.upload_s3', 'sigal.plugins.media_page']
+plugins = ['sigal.plugins.feeds', 'sigal.plugins.media_page']
 
 # Add a copyright text on the image (default: '')
 # copyright = "© An example copyright message"
@@ -226,3 +225,6 @@ zip_media_format = 'resized'
 # 	'policy': 'public-read',
 # 	'overwrite': False
 # }
+
+rss_feed = {'feed_url': 'https://myles.photo/rss.xml', 'nb_items': 10}
+atom_feed = {'feed_url': 'https://myles.photo/atom.xml', 'nb_items': 10}
