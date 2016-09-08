@@ -121,7 +121,7 @@ def compile_scss():
     """
     scss_file = os.path.join(api.env.proj_dir, 'theme/static/scss/style.scss')
     css_file = os.path.join(api.env.proj_dir, 'theme/static/css/style.css')
-    include_path = os.path.join(api.env.proj_dir, 'bower_components/')
+    include_path = os.path.join(api.env.proj_dir, 'bower_components')
 
     with virtualenv():
         api.run('sassc.py --include-path={0} {1} {2}'.format(include_path,
