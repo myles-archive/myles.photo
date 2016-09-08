@@ -7,9 +7,9 @@
   "license": "MIT",
   "homepage": "https://myles.photo/",
   "dependencies": {
-    "bourbon": "^4.2.7",
-    "neat": "^1.8.0",
-    "bitters": "^1.3.2",
-    "modular-scale": "^2.1.3"
+    "bourbon": "latest",
+    "neat": "latest",
+    "bitters": "latest",
+    "modular-scale": "latest"
   }
 }

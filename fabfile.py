@@ -19,7 +19,7 @@ api.env.venv_python = os.path.join(api.env.venv_dir, 'bin/python')
 api.env.venv_pip = os.path.join(api.env.venv_dir, 'bin/pip')
 
 # git bullshit
-api.env.repo = 'git@github.com:myles/myles.photo.git'
+api.env.repo = 'https://github.com/myles/myles.photo.git'
 api.env.remote = 'origin'
 api.env.branch = 'master'
 
@@ -72,6 +72,7 @@ def setup():
 
     # install the dependencies.
     pip_upgrade()
+    bower_upgrade()
 
 
 @api.task
@@ -99,8 +100,18 @@ def pip_upgrade():
     """
     Upgrade the third party Python libraries.
     """
-    with virtualenv():
-        api.run('pip install --upgrade -r requirements.txt')
+    requirements_txt = os.path.join(api.env.proj_dir, 'requirements.txt')
+    api.run('{0} install --upgrade -r {1}'.format(api.env.venv_pip,
+                                                  requirements_txt))
+
+
+@api.task
+def bower_upgrade():
+    """
+    Upgrade the third party Bower libraries.
+    """
+    with api.cd(api.env.proj_dir):
+        api.run('bower install --upgrade')
 
 
 @api.task
@@ -161,6 +172,7 @@ def ship_it():
     # The deploy tasks
     update_code()
     pip_upgrade()
+    bower_upgrade()
     compile_scss()
     build()
 
