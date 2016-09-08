@@ -12,27 +12,50 @@
 {% endblock %}
 
 {% block content %}
-    {% if album.albums %}
-        <div class="album-list">
-            {% for alb in album.albums %}
-            <a href="{{ alb.url }}" title="{{ alb.title }}" class="album-list__link">
-                <div class="album-list__image-wrapper">
-                    <img src="{{ alb.thumbnail }}" alt="{{ alb.title }}" class="album-list__image">
-                </div>
-                
-                <div class="album-list__heading">
-                    {{ alb.title }}
-                </div>
-                
-                {% if album.description %}
-                <div class="album-list__description">
-                    {{ alb.description|truncate(75, True) }}
-                </div>
-                {% endif %}
+{% if album.albums %}
+    <div class="album-list">
+        {% for alb in album.albums %}
+        <a href="{{ alb.url }}" title="{{ alb.title }}" class="album-list__link">
+            <div class="album-list__image-wrapper">
+                <img src="{{ alb.thumbnail }}" alt="{{ alb.title }}" class="album-list__image">
+            </div>
+            
+            <div class="album-list__heading">
+                {{ alb.title }}
+            </div>
+            
+            {% if album.description %}
+            <div class="album-list__description">
+                {{ alb.description|truncate(75, True) }}
+            </div>
+            {% endif %}
+        </a>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% if album.medias %}
+    <div class="gallery">
+    {% for media in album.medias %}
+        {% set media_title = media.title if media.title else media.filename %}
+        <div class="gallery__item gallery__item--{{ media.type }}">
+            <a href="{{ media.filename }}.html" class="gallery__link" title="{{ media_title }}">
+                <img src="{{ media.thumbnail }}" alt="{{ media.filename }}" title="{{ media_title }}" class="gallery__thumbnail">
             </a>
-            {% endfor %}
         </div>
-    {% endif %}
-    
-    
+    {% endfor %}
+    </div>
+{% endif %}
+
+{% if album.zip %}
+    <div id="additionnal-infos" class="row">
+        <p><a href="{{ album.zip }}" title="Download a zip archive with all images">Download ZIP</a></p>
+    </div>
+{% endif %}
+
+{% if album.description %}
+    <div id="description" class="row">
+        {{ album.description }}
+    </div>
+{% endif %}
 {% endblock %}

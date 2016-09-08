@@ -39,7 +39,7 @@ author = 'Myles Braithwaite'
 # ----------------
 
 # Size of resized image (default: (640, 480))
-img_size = (800, 600)
+img_size = (3000, 1500)
 
 # Should we use openlayers to show a map of the images where possible?
 # This option only has an effect on the galleria theme for the while.
@@ -82,7 +82,7 @@ thumb_dir = 'thumb'
 # thumb_suffix = '.tn'
 
 # Thumbnail size (default: (200, 150))
-thumb_size = (500, 500)
+thumb_size = (1500, 1500)
 
 # Crop the image to fill the box
 thumb_fit = True

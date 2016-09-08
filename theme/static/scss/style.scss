@@ -1,11 +1,13 @@
+// Dependencies
+@import 'modular-scale/stylesheets/modular-scale';
 @import 'bourbon/app/assets/stylesheets/bourbon';
 @import 'neat/app/assets/stylesheets/neat';
 
-@import 'variables';
+// Base
+@import '01_base/mixins';
+@import '01_base/variables';
+@import '01_base/base';
+@import '01_base/typography';
 
-@import 'bitters/core/base';
-
-@import 'global';
-
-@import 'components/album-list';
-@import 'components/breadcrumb';
+// Layout
+@import '02_layout/page';

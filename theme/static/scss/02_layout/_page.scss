@@ -1,0 +1,6 @@
+.page {
+  @at-root #{&}__header {
+    margin-bottom: $base-spacing;
+    margin-top: $base-spacing;
+  }
+}

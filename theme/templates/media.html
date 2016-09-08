@@ -1,43 +1,44 @@
 {% extends "base.html" %}
 
+{% set media_title = media.title if media.title else media.filename %}
+
+{% block breadcrumb %}
+    {% if album.breadcrumb %}
+    <div class="breadcrumb">
+        <a href="/" class="breadcrumb__item breadcrumb__item--first">Home</a>
+        {% for url, title in album.breadcrumb %}
+        <a href="{{ url }}" class="breadcrumb__item{% if loop.last %} breadcrumb__item--last{% endif %}">{{ title }}</a>
+        {% endfor -%}
+        <a href="#">{{ media_title }}</a>
+    </div>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
-    {% set media_title = media.title if media.title else media.filename %}
-    <header>
-        {% if album.breadcrumb %}
-        <h2>
-            {% for url, title in album.breadcrumb %}
-            <a href="{{ url }}">{{ title }}</a> »
-            {% endfor -%}
-            <a href="#">{{ media_title }}</a>
-        </h2>
-        <hr>
-        {% endif %}
-    </header>
-    
     {% if media %}
-        <div class="twelve columns thumbnail">
+    <div class="media media--{{ media.type }}">
         {% if media.type == "image" %}
-            <img src="{{ media.filename }}" alt="{{ media_title }}" title="{{ media_title }}" />
+        <img src="{{ media.filename }}" alt="{{ media_title }}" title="{{ media_title }}" class="media__image">
         {% endif %}
         {% if media.type == "video" %}
-            <video controls>
-                <source src='{{ media.filename }}' type='video/webm' />
-            </video>
-        {% endif %}
-        </div>
-    {% endif %}
-    
-    <div class="two columns offset-by-four">
-        {% if previous_media %}
-        <a href="{{ previous_media.filename }}.html">« previous</a>
-        {% else %}
-        &nbsp;
+        <video controls class="media__video">
+            <source src="{{ media.filename }}" type="video/webm" class="media__video-source">
+        </video>
         {% endif %}
     </div>
+    {% endif %}
     
-    <div class="two columns">
+    <div class="pager">
+        {% if previous_media %}
+        <a href="{{ previous_media.filename }}.html" class="pager__previous pager__previous--on">Previous</a>
+        {% else %}
+        <span class="pager__previous pager__previous--off">Previous</span>
+        {% endif %}
+        
         {% if next_media %}
-        <a href="{{ next_media.filename }}.html">next »</a>
+        <a href="{{ previous_media.filename }}.html" class="pager__next pager__next--on">Next</a>
+        {% else %}
+        <span class="pager__next pager__next--off">Next</span>
         {% endif %}
     </div>
 {% endblock %}

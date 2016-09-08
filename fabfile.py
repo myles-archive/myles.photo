@@ -34,14 +34,14 @@ def virtualenv():
             yield
 
 
-def sigal(command, **kwargs):
+def sigal(command, args='', **opts):
     """
     Helper function for running the sigal command.
     """
-    args = ' '.join(['--{0}={1}'.format(k, v) for (k, v) in kwargs.items()])
+    options = ' '.join(['--{0}={1}'.format(k, v) for (k, v) in opts.items()])
 
     with virtualenv():
-        api.run('sigal {0} {1}'.format(command, args))
+        api.run('sigal {0} {1} {2}'.format(command, options, args))
 
 
 @api.task
@@ -55,18 +55,18 @@ def setup():
                                              api.env.html_dir,
                                              api.env.venv_dir])))
 
-    if not api.exists(os.path.join(api.env.proj_dir, '.git')):
-        # clone the git repo
-        with api.cd(api.env.proj_dir):
-            api.run('git clone {0} .'.format(api.env.repo))
-
     # make sure the directories are writeable by me.
     api.sudo('chown myles:myles {0}'.format(' '.join([api.env.proj_dir,
                                                       api.env.html_dir,
                                                       api.env.venv_dir])))
 
+    # clone the git repo
+    if not api.exists(os.path.join(api.env.proj_dir, '.git')):
+        with api.cd(api.env.proj_dir):
+            api.run('git clone {0} .'.format(api.env.repo))
+
     # createh virtual environment.
-    if not api.exists(api.env.venv_dir):
+    if not api.exists(api.env.venv_python):
         api.run('virtualenv {0}'.format(api.env.venv_dir))
 
     # install the dependencies.
@@ -123,8 +123,10 @@ def build():
     Build the photo gallery.
     """
     config_file = os.path.join(api.env.proj_dir, 'sigal.conf.py')
+    source_dir = os.path.join(api.env.proj_dir, 'source')
 
-    sigal('build', config=config_file)
+    sigal('build', args='{0} {1}'.format(source_dir, api.env.html_dir),
+          config=config_file)
 
 
 @api.task
@@ -158,6 +160,8 @@ def ship_it():
     # The deploy tasks
     update_code()
     pip_upgrade()
+    compile_scss()
+    build()
 
     # Draw a ship
     api.puts("                           |    |    |                ")

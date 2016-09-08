@@ -20,12 +20,17 @@
     <body>
         {% block body %}
         <div class="page">
-            <div class="header" role="banner">
-                <h1 class="header__title">Myles' Photos</h1>
+            <div class="page__header" role="banner">
+                <h1 class="page__title">Myles' Photos</h1>
                 {% block breadcrumb %}{% endblock %}
             </div>
-            <div class="main" role="main">
+            
+            <div class="page__main" role="main">
                 {% block content %}{% endblock %}
+            </div>
+            
+            <div class="page__footer" role="footer">
+                {% block footer %}{% endblock %}
             </div>
         </div>
         {% endblock %}
