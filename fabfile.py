@@ -2,6 +2,7 @@ import os
 from contextlib import contextmanager
 
 from fabric import api
+from fabric.contrib.files import exists
 
 api.env.hosts = ['bear']
 api.env.use_ssh_config = True
@@ -61,12 +62,12 @@ def setup():
                                                       api.env.venv_dir])))
 
     # clone the git repo
-    if not api.exists(os.path.join(api.env.proj_dir, '.git')):
+    if not exists(os.path.join(api.env.proj_dir, '.git')):
         with api.cd(api.env.proj_dir):
             api.run('git clone {0} .'.format(api.env.repo))
 
     # createh virtual environment.
-    if not api.exists(api.env.venv_python):
+    if not exists(api.env.venv_python):
         api.run('virtualenv {0}'.format(api.env.venv_dir))
 
     # install the dependencies.
