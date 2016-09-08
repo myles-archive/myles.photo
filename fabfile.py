@@ -119,9 +119,9 @@ def compile_scss():
     """
     Compile the SCSS files.
     """
-    scss_file = './theme/static/scss/style.scss'
-    css_file = './theme/static/css/style.css'
-    include_path = './bower_components/'
+    scss_file = os.path.join(api.env.proj_dir, 'theme/static/scss/style.scss')
+    css_file = os.path.join(api.env.proj_dir, 'theme/static/css/style.css')
+    include_path = os.path.join(api.env.proj_dir, 'bower_components/')
 
     with virtualenv():
         api.run('sassc.py --include-path={0} {1} {2}'.format(include_path,
@@ -186,3 +186,14 @@ def ship_it():
     api.puts("               ^^^^^ ^^^^^^^^^^^^^^^^^^^^^            ")
     api.puts("                 ^^^^      ^^^^     ^^^    ^^         ")
     api.puts("                      ^^^^      ^^^                   ")
+
+
+@api.task
+def truck_it():
+    """
+    Ship the code from the server.
+    """
+
+    # Get the latest version of the code.
+    api.local('git pull {0} {1}'.format(api.env.remote, api.env.branch))
+    build()
