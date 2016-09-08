@@ -122,7 +122,9 @@ ignore_directories = [
     'static/scss'
 ]
 
-ignore_files = []
+ignore_files = [
+    '*.scss'
+]
 
 # -------------
 # Video options
@@ -166,8 +168,9 @@ video_size = (480, 360)
 # use_assets_cdn = True
 
 # A list of links (tuples (title, URL))
-# links = [('Example link', 'http://example.org'),
-#          ('Another link', 'http://example.org')]
+links = [('Homepage', 'https://mylesb.ca'),
+         ('Blog', 'https://mylesbraithwaite.com'),
+         ("Myles' Lab", 'https://mylesbraithwaite.org')]
 
 # Google Analytics tracking code (UA-xxxx-x)
 # google_analytics = ''
@@ -226,5 +229,5 @@ plugins = ['sigal.plugins.feeds', 'sigal.plugins.media_page']
 # 	'overwrite': False
 # }
 
-rss_feed = {'feed_url': 'https://myles.photo/rss.xml', 'nb_items': 10}
-atom_feed = {'feed_url': 'https://myles.photo/atom.xml', 'nb_items': 10}
+rss_feed = { 'feed_url': 'https://myles.photo/rss.xml', 'nb_items': 10 }
+atom_feed = { 'feed_url': 'https://myles.photo/atom.xml', 'nb_items': 10 }

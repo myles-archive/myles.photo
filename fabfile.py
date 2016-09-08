@@ -3,6 +3,7 @@ from contextlib import contextmanager
 
 from fabric import api
 from fabric.contrib.files import exists
+from fabric.contrib.project import rsync_project
 
 api.env.hosts = ['bear']
 api.env.use_ssh_config = True
@@ -186,6 +187,12 @@ def ship_it():
     api.puts("               ^^^^^ ^^^^^^^^^^^^^^^^^^^^^            ")
     api.puts("                 ^^^^      ^^^^     ^^^    ^^         ")
     api.puts("                      ^^^^      ^^^                   ")
+
+
+@api.task
+def rsync():
+    rsync_project(remote_dir=api.env.html_dir, local_dir='./build/',
+                  exclude='static/scss/')
 
 
 @api.task
