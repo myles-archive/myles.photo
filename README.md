@@ -1,4 +1,3 @@
-# [myles.photo](https://myles.photo/ "Myles' Photos")
+# myles.photo
 
-**Myles Braithwaite**'s photo gallery.
-
+[Myles](https://mylesb.ca/ "Myles Braithwaite")'s photoblog.
