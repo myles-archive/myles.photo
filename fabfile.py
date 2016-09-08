@@ -18,7 +18,7 @@ api.env.venv_python = os.path.join(api.env.venv_dir, 'bin/python')
 api.env.venv_pip = os.path.join(api.env.venv_dir, 'bin/pip')
 
 # git bullshit
-api.env.repo = 'gogs@127.0.0.1:websites/myles.photo-www.git'
+api.env.repo = 'git@github.com:myles/myles.photo.git'
 api.env.remote = 'origin'
 api.env.branch = 'master'
 
